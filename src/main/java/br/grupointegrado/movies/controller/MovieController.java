@@ -1,12 +1,10 @@
 package br.grupointegrado.movies.controller;
 
+import br.grupointegrado.movies.dto.MovieRequestDTO;
 import br.grupointegrado.movies.model.Movie;
 import br.grupointegrado.movies.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +25,14 @@ public class MovieController {
         return this.repository.findById(id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Filme não foi encontrado"));
+    }
+
+    @PostMapping
+    public Movie save(@RequestBody MovieRequestDTO dto) {
+        Movie movie = new Movie();
+        movie.setNome(dto.nome());
+
+        return this.repository.save(movie);
     }
 
 }
