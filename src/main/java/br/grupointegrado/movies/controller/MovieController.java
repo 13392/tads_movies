@@ -4,6 +4,7 @@ import br.grupointegrado.movies.dto.MovieRequestDTO;
 import br.grupointegrado.movies.model.Movie;
 import br.grupointegrado.movies.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,9 @@ public class MovieController {
     private MovieRepository repository;
 
     @GetMapping
-    public List<Movie> findAll() {
-        return this.repository.findAll();
+    public ResponseEntity<List<Movie>> findAll() {
+        List<Movie> movies = this.repository.findAll();
+        return ResponseEntity.ok(movies);
     }
 
     @GetMapping("/{id}")
@@ -28,11 +30,26 @@ public class MovieController {
     }
 
     @PostMapping
-    public Movie save(@RequestBody MovieRequestDTO dto) {
+    public ResponseEntity<Movie> save(@RequestBody MovieRequestDTO dto) {
+        if (dto.nome().isEmpty()) {
+            return ResponseEntity.status(400).build();
+        }
+
         Movie movie = new Movie();
         movie.setNome(dto.nome());
 
-        return this.repository.save(movie);
+        this.repository.save(movie);
+        return ResponseEntity.ok(movie);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        Movie movie = this.repository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Filme não foi encontrado"));
+
+        this.repository.delete(movie);
+        return ResponseEntity.noContent().build();
     }
 
 }
