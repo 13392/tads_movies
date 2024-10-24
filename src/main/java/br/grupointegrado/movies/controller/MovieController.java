@@ -32,7 +32,7 @@ public class MovieController {
     @PostMapping
     public ResponseEntity<Movie> save(@RequestBody MovieRequestDTO dto) {
         if (dto.nome().isEmpty()) {
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.status(428).build();
         }
 
         Movie movie = new Movie();
@@ -50,6 +50,22 @@ public class MovieController {
 
         this.repository.delete(movie);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Movie> update(@PathVariable Integer id, @RequestBody MovieRequestDTO dto) {
+        if (dto.nome().isEmpty()) {
+            return ResponseEntity.status(428).build();
+        }
+
+        Movie movie = this.repository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Filme não foi encontrado"));
+
+        movie.setNome(dto.nome());
+
+        this.repository.save(movie);
+        return ResponseEntity.ok(movie);
     }
 
 }
