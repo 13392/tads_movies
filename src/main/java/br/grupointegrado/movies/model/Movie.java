@@ -15,6 +15,10 @@ public class Movie {
     @Column(name = "name")
     private String nome;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
+
     public Integer getId() {
         return id;
     }
@@ -29,6 +33,14 @@ public class Movie {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
