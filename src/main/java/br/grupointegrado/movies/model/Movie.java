@@ -2,6 +2,7 @@ package br.grupointegrado.movies.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,9 @@ public class Movie {
 
     @Column(name = "name")
     private String nome;
+
+    @Column
+    private BigDecimal nota;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -41,6 +45,14 @@ public class Movie {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public BigDecimal getNota() {
+        return nota;
+    }
+
+    public void setNota(BigDecimal nota) {
+        this.nota = nota;
     }
 
     @Override

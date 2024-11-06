@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -63,6 +64,20 @@ public class MovieController {
                         new IllegalArgumentException("Filme não foi encontrado"));
 
         movie.setNome(dto.nome());
+
+        this.repository.save(movie);
+        return ResponseEntity.ok(movie);
+    }
+
+    @PostMapping("/{id}/nota")
+    public ResponseEntity<Movie> addNota(@PathVariable Integer id,
+                         @RequestBody BigDecimal nota) {
+
+        Movie movie = this.repository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Filme não foi encontrado"));
+
+        movie.setNota(nota);
 
         this.repository.save(movie);
         return ResponseEntity.ok(movie);
