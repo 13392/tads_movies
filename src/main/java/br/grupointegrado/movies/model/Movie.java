@@ -1,5 +1,6 @@
 package br.grupointegrado.movies.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -18,6 +19,9 @@ public class Movie {
 
     @Column
     private BigDecimal nota;
+
+    @Column
+    private String resumo;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -53,6 +57,14 @@ public class Movie {
 
     public void setNota(BigDecimal nota) {
         this.nota = nota;
+    }
+
+    public String getResumo() {
+        return resumo;
+    }
+
+    public void setResumo(String resumo) {
+        this.resumo = resumo;
     }
 
     @Override

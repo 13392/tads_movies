@@ -83,4 +83,18 @@ public class MovieController {
         return ResponseEntity.ok(movie);
     }
 
+    @PostMapping("/{id}/resumo")
+    public ResponseEntity<Movie> addResumo(@PathVariable Integer id,
+                                         @RequestBody String resumo) {
+
+        Movie movie = this.repository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Filme não foi encontrado"));
+
+        movie.setResumo(resumo);
+
+        this.repository.save(movie);
+        return ResponseEntity.ok(movie);
+    }
+
 }
