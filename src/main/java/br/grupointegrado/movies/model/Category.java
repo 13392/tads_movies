@@ -17,7 +17,7 @@ public class Category {
     private String nome;
 
     @OneToMany(mappedBy = "category")
-    @JsonIgnoreProperties("category")
+    @JsonIgnoreProperties({"category", "actors"})
     private List<Movie> movies;
 
     public Integer getId() {

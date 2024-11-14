@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,7 +26,11 @@ public class Movie {
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("movies")
     private Category category;
+
+    @OneToMany(mappedBy = "id.movie")
+    private List<MovieActor> actors;
 
     public Integer getId() {
         return id;
@@ -65,6 +70,14 @@ public class Movie {
 
     public void setResumo(String resumo) {
         this.resumo = resumo;
+    }
+
+    public List<MovieActor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<MovieActor> actors) {
+        this.actors = actors;
     }
 
     @Override
