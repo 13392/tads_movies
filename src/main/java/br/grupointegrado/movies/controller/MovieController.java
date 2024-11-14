@@ -1,13 +1,18 @@
 package br.grupointegrado.movies.controller;
 
 import br.grupointegrado.movies.dto.MovieRequestDTO;
+import br.grupointegrado.movies.model.Actor;
 import br.grupointegrado.movies.model.Movie;
+import br.grupointegrado.movies.model.MovieActor;
+import br.grupointegrado.movies.model.MovieActorPK;
+import br.grupointegrado.movies.repository.ActorRepository;
 import br.grupointegrado.movies.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -16,6 +21,9 @@ public class MovieController {
 
     @Autowired
     private MovieRepository repository;
+
+    @Autowired
+    private ActorRepository actorRepository;
 
     @GetMapping
     public ResponseEntity<List<Movie>> findAll() {
@@ -95,6 +103,31 @@ public class MovieController {
 
         this.repository.save(movie);
         return ResponseEntity.ok(movie);
+    }
+
+    @PostMapping("/{id}/add-actor")
+    public ResponseEntity<Movie> addActor(@PathVariable Integer id,
+                                           @RequestBody Integer actorId) {
+
+        Movie movie = repository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found"));
+        Actor actor = actorRepository.findById(actorId).orElseThrow(() -> new RuntimeException("Actor not found"));
+
+        MovieActorPK pk = new MovieActorPK();
+        pk.setMovieId(movie.getId());
+        pk.setActorId(actor.getId());
+
+        MovieActor movieActor = new MovieActor();
+        movieActor.setId(pk);
+        movieActor.setActor(actor);
+        movieActor.setMovie(movie);
+        movieActor.setMovieDate(LocalDate.now());
+
+        movie.addActor(movieActor);
+
+        repository.save(movie); // salva o filme e a relação via cascade
+
+        return ResponseEntity.ok(movie);
+
     }
 
 }

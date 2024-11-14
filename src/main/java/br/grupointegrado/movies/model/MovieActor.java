@@ -1,9 +1,7 @@
 package br.grupointegrado.movies.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -14,6 +12,17 @@ public class MovieActor {
     @EmbeddedId
     private MovieActorPK id;
 
+    @ManyToOne
+    @MapsId("movieId")
+    @JoinColumn(name = "movie_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("actors")
+    private Movie movie;
+
+    @ManyToOne
+    @MapsId("actorId")
+    @JoinColumn(name = "actor_id", referencedColumnName = "id")
+    private Actor actor;
+
     @Column(name = "movie_date")
     private LocalDate movieDate;
 
@@ -23,6 +32,22 @@ public class MovieActor {
 
     public void setId(MovieActorPK id) {
         this.id = id;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public Actor getActor() {
+        return actor;
+    }
+
+    public void setActor(Actor actor) {
+        this.actor = actor;
     }
 
     public LocalDate getMovieDate() {

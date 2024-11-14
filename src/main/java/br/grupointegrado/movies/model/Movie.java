@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ public class Movie {
     @JsonIgnoreProperties("movies")
     private Category category;
 
-    @OneToMany(mappedBy = "id.movie")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieActor> actors;
 
     public Integer getId() {
@@ -78,6 +79,14 @@ public class Movie {
 
     public void setActors(List<MovieActor> actors) {
         this.actors = actors;
+    }
+
+    // encapsulamento de regras
+    public void addActor(MovieActor movieActor) {
+        if (this.actors == null) {
+            this.actors = new ArrayList<>();
+        }
+        this.actors.add(movieActor);
     }
 
     @Override

@@ -1,35 +1,48 @@
 package br.grupointegrado.movies.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import java.util.Objects;
+
 @Embeddable
 public class MovieActorPK {
 
-    @ManyToOne
-    @JoinColumn(name = "movie_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("actors")
-    private Movie movie;
+    @Column(name = "movie_id")
+    private Integer movieId;
 
-    @ManyToOne
-    @JoinColumn(name = "actor_id", referencedColumnName = "id")
-    private Actor actor;
+    @Column(name = "actor_id")
+    private Integer actorId;
 
-    public Movie getMovie() {
-        return movie;
+    public Integer getMovieId() {
+        return movieId;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setMovieId(Integer movieId) {
+        this.movieId = movieId;
     }
 
-    public Actor getActor() {
-        return actor;
+    public Integer getActorId() {
+        return actorId;
     }
 
-    public void setActor(Actor actor) {
-        this.actor = actor;
+    public void setActorId(Integer actorId) {
+        this.actorId = actorId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovieActorPK that = (MovieActorPK) o;
+        return Objects.equals(movieId, that.movieId) && Objects.equals(actorId, that.actorId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieId, actorId);
     }
 }
