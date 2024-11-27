@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToOne;
 
 import java.util.Objects;
 
+// indica que essa classe pode ser INCORPORÁVEL
 @Embeddable
 public class MovieActorPK {
 
@@ -33,7 +34,6 @@ public class MovieActorPK {
         this.actorId = actorId;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -41,7 +41,6 @@ public class MovieActorPK {
         return Objects.equals(movieId, that.movieId) && Objects.equals(actorId, that.actorId);
     }
 
-    @Override
     public int hashCode() {
         return Objects.hash(movieId, actorId);
     }

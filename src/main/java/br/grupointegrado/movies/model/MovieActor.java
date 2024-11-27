@@ -7,12 +7,14 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "movies_actors")
-public class MovieActor {
+public class MovieActor { // atuacao
 
-    @EmbeddedId
+    @EmbeddedId // representa que eu tenho uma chave composta
+    // embedded = incorporada
     private MovieActorPK id;
 
     @ManyToOne
+    // representa que essa coluna já foi mapeada dentro da PK
     @MapsId("movieId")
     @JoinColumn(name = "movie_id", referencedColumnName = "id")
     @JsonIgnoreProperties("actors")

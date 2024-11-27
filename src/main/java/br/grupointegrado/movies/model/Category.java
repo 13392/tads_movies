@@ -16,6 +16,9 @@ public class Category {
     @Column(name = "name", length = 200)
     private String nome;
 
+    // mapeamento bi-direcional do ManyToOne, é o caminho reverso
+    // esse lado NÃO É OBRIGATÓRIO
+    // o mappedBy representa o nome do atributo NO JAVA
     @OneToMany(mappedBy = "category")
     @JsonIgnoreProperties({"category", "actors"})
     private List<Movie> movies;

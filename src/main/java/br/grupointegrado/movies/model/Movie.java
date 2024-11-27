@@ -8,15 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table
+@Entity // permite que a classe seja gerenciada pelo JPA
+@Table // representa que a classe vai ser persistida em uma tabela
 public class Movie {
 
-    @Id
+    @Id // representa a nossa PK (primary key)
+    // indica que esse atributo é auto_increment no bd
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name") // esse é óbvio
     private String nome;
 
     @Column
@@ -25,8 +26,13 @@ public class Movie {
     @Column
     private String resumo;
 
+    // representa que esse lado é o lado forte da relação
+    // esse é o lado que carrega a FK
+    // esse lado do mapeamento é obrigatório
     @ManyToOne
+    // indica a coluna que é feito o join no bd
     @JoinColumn(name = "category_id", referencedColumnName = "id")
+    // indicador para não acontecer um loop infinito
     @JsonIgnoreProperties("movies")
     private Category category;
 
